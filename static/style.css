@@ -1,0 +1,18 @@
+.contain{
+    width: 800px;
+    border: 1px #999 dashed;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.describe{
+    margin: 10px;
+}
+input[type="button"]{
+    margin-left: 15px;
+    margin-bottom: 10px;
+}
+form{
+    margin-left: 15px;
+    margin-bottom: 10px;
+}

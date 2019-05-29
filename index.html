@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Post数据类型解析</title>
+</head>
+<link rel="stylesheet" type="text/css" href="./static/style.css">
+<script>
+    function commonXhr() {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
+                    console.log('服务端返回值：', xhr.responseText);
+                } else {
+                    console.log('error...');
+                }
+            }
+        };
+        return xhr;
+    }
+
+    // 1、application/x-www-form-urlencoded 数据类型
+    function urlencoded() {
+        var xhr = commonXhr();
+        var reqParam = "name=jack";
+        xhr.open("post", '/urlencoded', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.send(reqParam);
+    }
+
+    // 2.1、multipart/form-data 数据类型  formidable 进行解析
+    function formData1() {
+        var xhr = commonXhr();
+        var reqParam = new FormData(document.form2);
+        xhr.open("post", '/formData1', true);
+        xhr.send(reqParam);
+    }
+
+    // 2.2、multipart/form-data 数据类型  multiparty 进行解析
+    function formData2() {
+        var xhr = commonXhr();
+        var reqParam = new FormData(document.form2);
+        xhr.open("post", '/formData2', true);
+        xhr.send(reqParam);
+    }
+
+    // 3、application/json 数据类型
+    function applicationJson() {
+        var xhr = commonXhr();
+        var reqParam = {
+            name: 'jack'
+        };
+        xhr.open("post", '/applicationJson', true);
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.send(JSON.stringify(reqParam));
+    }
+
+    // 4、text/xml 数据类型
+    function textXml() {
+        var xhr = commonXhr();
+        var text = '<?xml version="1.0"?><methodCall><methodName>examples.getStateName</methodName>' +
+            '<params><param><value><i4>41</i4></value></param></params></methodCall>';
+        xhr.open("post", '/textXml', true);
+        xhr.setRequestHeader('Content-type', 'text/xml');
+        xhr.send(text);
+    }
+</script>
+<body>
+<div class="contain">
+    <div class="describe">1、application/x-www-form-urlencoded 数据类型：</div>
+    <input type="button" value="请求解析" onclick="urlencoded()">
+</div>
+
+<div class="contain">
+    <div class="describe">2、multipart/form-data 数据类型：</div>
+    <form enctype="multipart/form-data" target="hide_iframe" name="form2" id="form2" method="post" action="/form-data">
+        文件：<input type="file" name="upload"/>
+        名称：<input type="text" name="name"/>
+    </form>
+    <input type="button" value="formidable 解析" onclick="formData1()">
+    <input type="button" value="multiparty 解析" onclick="formData2()">
+</div>
+
+<div class="contain">
+    <div class="describe">3、application/json 数据类型：</div>
+    <input type="button" value="请求解析" onclick="applicationJson()">
+</div>
+
+<div class="contain">
+    <div class="describe">4、text/xml 数据类型：</div>
+    <input type="button" value="请求解析" onclick="textXml()">
+</div>
+</body>
+</body>
+</html>
